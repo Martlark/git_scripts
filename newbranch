@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# new branch
+
+if [ -z "$1" ]; then
+  echo branch name required
+  exit
+fi
+
+BRANCH_NAME=""
+
+for arg in "$@"; do
+  clean_arg=`echo ${arg} | tr "[:punct:]" -d`
+  BRANCH_NAME=${BRANCH_NAME}-${clean_arg}
+done
+
+while [[ ${BRANCH_NAME} == *"--"* ]]; do
+  BRANCH_NAME=${BRANCH_NAME/--/-}
+done
+
+BRANCH_NAME=${BRANCH_NAME:1}
+
+git checkout -b ${BRANCH_NAME}
